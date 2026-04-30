@@ -77,4 +77,4 @@ function AddTask({ tasks, setTasks }) {
   )
 }
 
-export default AddTask
+export default AddTask;

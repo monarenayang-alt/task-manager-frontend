@@ -33,4 +33,4 @@ function TaskDetails({ tasks }) {
   )
 }
 
-export default TaskDetails
+export default TaskDetails;

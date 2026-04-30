@@ -7,10 +7,10 @@ import TaskList from "./pages/TaskList";
 import AddTask from "./pages/AddTask";
 
 function App() {
-  // ✅ Global task state (always an array)
+  // ✅ Tasks state (always an array — prevents crashes)
   const [tasks, setTasks] = useState([]);
 
-  // ✅ Auth token (from login integration)
+  // ✅ Auth token (from login)
   const [token, setToken] = useState(
     localStorage.getItem("token")
   );
@@ -18,17 +18,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* ✅ Default route */}
+        {/* Default redirect */}
         <Route path="/" element={<Navigate to="/home" />} />
 
-        {/* ✅ Public routes */}
+        {/* Public routes */}
         <Route path="/home" element={<Home />} />
-        <Route
-          path="/login"
-          element={<Login setToken={setToken} />}
-        />
+        <Route path="/login" element={<Login setToken={setToken} />} />
 
-        {/* ✅ Task list */}
+        {/* Protected routes */}
         <Route
           path="/list"
           element={
@@ -40,7 +37,6 @@ function App() {
           }
         />
 
-        {/* ✅ Add task (local state only – safe) */}
         <Route
           path="/add"
           element={
@@ -52,7 +48,7 @@ function App() {
           }
         />
 
-        {/* ✅ Catch‑all */}
+        {/* Catch‑all */}
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     </BrowserRouter>
