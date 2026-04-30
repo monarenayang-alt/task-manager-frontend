@@ -31,3 +31,4 @@ const handleSubmit = async (e) => {
     setError("Backend not reachable")
   }
 }
+export default Login;
