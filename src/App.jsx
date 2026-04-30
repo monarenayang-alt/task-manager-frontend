@@ -1,48 +1,62 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useState } from "react";
 
-import Navbar from './components/Navbar'
-import Home from './pages/Home'
-import TaskList from './pages/TaskList'
-import AddTask from './pages/AddTask'
-import TaskDetails from './pages/TaskDetails'
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import TaskList from "./pages/TaskList";
+import AddTask from "./pages/AddTask";
 
 function App() {
-  const [tasks, setTasks] = useState([])
+  // ✅ Global task state (always an array)
+  const [tasks, setTasks] = useState([]);
+
+  // ✅ Auth token (from login integration)
+  const [token, setToken] = useState(
+    localStorage.getItem("token")
+  );
 
   return (
     <BrowserRouter>
-      <Navbar />
+      <Routes>
+        {/* ✅ Default route */}
+        <Route path="/" element={<Navigate to="/home" />} />
 
-      <div className="container mt-4">
-        <Routes>
-          {/* Redirect root to home */}
-          <Route path="/" element={<Navigate to="/home" />} />
+        {/* ✅ Public routes */}
+        <Route path="/home" element={<Home />} />
+        <Route
+          path="/login"
+          element={<Login setToken={setToken} />}
+        />
 
-          {/* Pages required by project */}
-          <Route path="/home" element={<Home />} />
-          <Route
-            path="/list"
-            element={<TaskList tasks={tasks} setTasks={setTasks} />}
-          />
-          <Route
-            path="/add"
-            element={<AddTask tasks={tasks} setTasks={setTasks} />}
-          />
-          <Route
-            path="/details/:id"
-            element={<TaskDetails tasks={tasks} />}
-          />
+        {/* ✅ Task list */}
+        <Route
+          path="/list"
+          element={
+            token ? (
+              <TaskList tasks={tasks} setTasks={setTasks} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
 
-          {/* Edit task route (reuses AddTask component) */}
-          <Route
-            path="/edit/:id"
-            element={<AddTask tasks={tasks} setTasks={setTasks} />}
-          />
-        </Routes>
-      </div>
+        {/* ✅ Add task (local state only – safe) */}
+        <Route
+          path="/add"
+          element={
+            token ? (
+              <AddTask tasks={tasks} setTasks={setTasks} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+
+        {/* ✅ Catch‑all */}
+        <Route path="*" element={<Navigate to="/home" />} />
+      </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

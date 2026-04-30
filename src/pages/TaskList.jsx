@@ -1,23 +1,26 @@
-import TaskCard from '../components/TaskCard'
+import TaskCard from "../components/TaskCard";
 
-function TaskList({ tasks, setTasks }) {
-
+function TaskList({ tasks = [], setTasks }) {
   const deleteTask = (id) => {
-    setTasks(tasks.filter(task => task.id !== id))
-  }
+    setTasks(tasks.filter(task => task.id !== id));
+  };
 
   const toggleTask = (id) => {
     setTasks(
       tasks.map(task =>
-        task.id === id ? { ...task, completed: !task.completed } : task
+        task.id === id
+          ? { ...task, completed: !task.completed }
+          : task
       )
-    )
-  }
+    );
+  };
 
   return (
     <div>
       <h2>Task List</h2>
-      {tasks.length === 0 && <p>No tasks available.</p>}
+
+      {tasks.length === 0 && <p>No tasks available</p>}
+
       {tasks.map(task => (
         <TaskCard
           key={task.id}
@@ -27,7 +30,7 @@ function TaskList({ tasks, setTasks }) {
         />
       ))}
     </div>
-  )
+  );
 }
 
-export default TaskList
+export default TaskList;

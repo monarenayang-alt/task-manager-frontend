@@ -1,39 +1,29 @@
-import TaskCard from '../components/TaskCard'
-
-function TaskList({ tasks, setTasks }) {
-
-  const deleteTask = (id) => {
-    setTasks(tasks.filter(task => task.id !== id))
-  }
-
-  const toggleTask = (id) => {
-    setTasks(
-      tasks.map(task =>
-        task.id === id
-          ? { ...task, completed: !task.completed }
-          : task
-      )
-    )
-  }
-
+function TaskCard({ task, onDelete, onToggle }) {
   return (
-    <div>
-      <h2 className="mb-3">Task List</h2>
+    <div
+      style={{
+        border: "1px solid #ccc",
+        padding: "10px",
+        marginBottom: "10px",
+        backgroundColor: task.completed ? "#e6ffe6" : "#ffffff"
+      }}
+    >
+      <h4>{task.title}</h4>
 
-      {tasks.length === 0 && (
-        <p className="text-muted">No tasks added yet.</p>
-      )}
+      <p>Status: {task.completed ? "Completed" : "Incomplete"}</p>
 
-      {tasks.map(task => (
-        <TaskCard
-          key={task.id}
-          task={task}
-          onDelete={deleteTask}
-          onToggle={toggleTask}
-        />
-      ))}
+      <button onClick={() => onToggle(task.id)}>
+        {task.completed ? "Undo" : "Complete"}
+      </button>
+
+      <button
+        onClick={() => onDelete(task.id)}
+        style={{ marginLeft: "10px", color: "red" }}
+      >
+        Delete
+      </button>
     </div>
-  )
+  );
 }
 
-export default TaskList
+export default TaskCard;
