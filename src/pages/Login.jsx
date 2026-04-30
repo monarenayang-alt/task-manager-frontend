@@ -8,24 +8,28 @@ function Login({ setToken }) {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
+    setError("");
 
     try {
-      const res = await fetch(
+      const response = await fetch(
         "https://task-manager-backend-1.onrender.com/api/auth/login",
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({
+            email: email,
+            password: password
+          })
         }
       );
 
-      const data = await res.json();
+      const data = await response.json();
 
-      if (!res.ok) {
+      if (!response.ok) {
         setError(data.message || "Login failed");
         return;
       }
@@ -38,32 +42,56 @@ function Login({ setToken }) {
       console.error(err);
       setError("Backend not reachable");
     }
-  };
+  }
 
   return (
-    <div>
+    <div
+      style={{
+        maxWidth: "400px",
+        margin: "60px auto",
+        padding: "20px",
+        border: "1px solid #ccc",
+        borderRadius: "6px",
+        backgroundColor: "#f9f9f9",
+        textAlign: "center"
+      }}
+    >
       <h2>Login</h2>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        <div style={{ marginBottom: "10px" }}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={{ width: "100%", padding: "8px" }}
+            required
+          />
+        </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <div style={{ marginBottom: "15px" }}>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={{ width: "100%", padding: "8px" }}
+            required
+          />
+        </div>
 
-        <button type="submit">Login</button>
+        <button
+          type="submit"
+          style={{
+            padding: "8px 16px",
+            cursor: "pointer"
+          }}
+        >
+          Login
+        </button>
       </form>
     </div>
   );
